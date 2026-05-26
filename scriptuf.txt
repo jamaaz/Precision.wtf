@@ -1,0 +1,459 @@
+-- KEY SYSTEM + LOADER with HWID LOCKING & AUTO-LOAD
+-- Precision.wtf License System
+-- YOU give keys to buyers (each key works on ONE device only)
+-- Once verified, script auto-loads on future joins
+-- TOTAL KEYS: 110
+
+-- 🔑 ALL 110 PRECISION.WTF KEYS (YOU give these to buyers)
+local validKeys = {
+    "KJTR-9MXQ-VLPA-WEUD",
+    "ZQMN-7KLP-RTYV-ACDS",
+    "HGBN-4WQE-XZMP-JTLC",
+    "PLMK-8QWA-NVTR-DSYH",
+    "CXZT-6VBN-QWER-MKLA",
+    "TQPA-1ZXC-VBNM-LKJH",
+    "WERT-5YUI-OPAS-DFGH",
+    "ASDF-2GHJ-KLZX-CVBN",
+    "QWER-9TYU-IOPA-SDFG",
+    "ZXCV-3BNML-KJHG-FDSA",
+    "MNOP-7LKJ-HGFD-SAZX",
+    "VBNM-4QWER-TYUI-OPAS",
+    "LKJH-8GFDS-AZXC-VBNM",
+    "POIU-6YTRE-WQAS-DFGH",
+    "MNBV-1CXZA-SQWE-RTYU",
+    "QAZW-5SXED-CRFV-TGBY",
+    "EDCR-9FVB-GYHN-UJMI",
+    "TGBY-2HNUJ-MIKL-OPQA",
+    "UJMI-7KLOP-QAZX-SWED",
+    "IKLO-3PQA-SWED-XCVB",
+    "ASZX-6QWED-CRTY-FVGB",
+    "QWAS-8EDCR-FVGT-BYHN",
+    "ZXAS-4WEDC-RTFV-GBNH",
+    "PLQA-1ZWSX-EDCR-FVGT",
+    "OKMN-9IJUH-YTGB-VFRE",
+    "JHGF-2DSAZ-XCVB-NMLK",
+    "YTRE-7WQAS-ZXCV-BNML",
+    "UIOP-3LKJH-GFDS-AZXC",
+    "BNML-6POIU-YTRE-WQAS",
+    "CVBN-8MNBV-CXZA-SQWE",
+    "LKJH-5QAZX-SWED-CRFV",
+    "POIU-9MNBV-CXZA-SWED",
+    "MNBV-2LKJH-GFDS-QWAS",
+    "QWED-7ASZX-CVBN-MLKP",
+    "ASDF-4ZXCV-BNML-KJHG",
+    "ZXCV-6QWER-TYUI-OPAS",
+    "CVBN-1LKJH-GFDS-POIU",
+    "MLKP-8QWAS-ZXED-CRFV",
+    "TYUI-3GHJK-LMNB-VCXZ",
+    "OPAS-9WEDC-VFRT-GBNH",
+    "H4V0C-X7K2-M9P4-Q3R8",
+    "R8T9-2W5M-N6P1-L7K3",
+    "J7K9-3L4M-N5P6-Q8R2",
+    "M9N8-7B6V-C5X4-Z3A1",
+    "P2L0-K9J8-H7G6-F5D4",
+    "S8D3-F9G2-H1J7-K6L5",
+    "Q1W2-E3R4-T5Y6-U7I8",
+    "O9I8-U7Y6-T5R4-E3W2",
+    "Z3X4-C5V6-B7N8-M9L0",
+    "K1J2-H3G4-F5D6-S7A8",
+    "N9M8-L7K6-J5H4-G3F2",
+    "B4V5-C6X7-Z8L9-K0J1",
+    "G7H8-J9K0-L1P2-Q3W4",
+    "E5R6-T7Y8-U9I0-O1P2",
+    "F3D4-S5A6-Z7X8-C9V0",
+    "W2Q3-E4R5-T6Y7-U8I9",
+    "L1K2-J3H4-G5F6-D7S8",
+    "P9O8-I7U6-Y5T4-R3E2",
+    "M0N1-B2V3-C4X5-Z6L7",
+    "A1S2-D3F4-G5H6-J7K8",
+    "Q9W8-E7R6-T5Y4-U3I2",
+    "Z1X2-C3V4-B5N6-M7L8",
+    "K9J8-H7G6-F5D4-S3A2",
+    "L0P1-O2I3-U4Y5-T6R7",
+    "E8W9-Q7R6-T5Y4-U3I2",
+    "F6D5-S4A3-Z2X1-C9V8",
+    "G4H5-J6K7-L8M9-N0P1",
+    "B2N3-M4L5-K6J7-H8G9",
+    "C1X2-Z3L4-K5J6-H7G8",
+    "V9B8-N7M6-L5K4-J3H2",
+    "T1R2-E3W4-Q5Y6-U7I8",
+    "Y7U8-I9O0-P1Q2-W3E4",
+    "H5G6-F7D8-S9A0-Z1X2",
+    "J3K4-L5M6-N7B8-V9C0",
+    "R4T5-Y6U7-I8O9-P0Q1",
+    "A9S8-D7F6-G5H4-J3K2",
+    "L1M2-N3B4-V5C6-X7Z8",
+    "Q2W3-E4R5-T6Y7-U8I9",
+    "O0P9-I8U7-Y6T5-R4E3",
+    "F5D6-S7A8-Z9X0-C1V2",
+    "G8H9-J0K1-L2P3-Q4W5",
+    "K4L5-M6N7-B8V9-C0X1",
+    "Z6X7-C8V9-B0N1-M2L3",
+    "T3R4-E5W6-Q7Y8-U9I0",
+    "H7J8-K9L0-P1Q2-W3E4",
+    "A2S3-D4F5-G6H7-J8K9",
+    "U5Y6-T7R8-E9W0-Q1P2",
+    "N1B2-V3C4-X5Z6-L7K8",
+    "I9O8-U7Y6-T5R4-E3W2",
+    "M5L6-K7J8-H9G0-F1D2",
+    "C3V4-B5N6-M7L8-K9J0",
+    "P7Q8-W9E0-R1T2-Y3U4",
+    "D4F5-G6H7-J8K9-L0P1",
+    "X9Z0-C1V2-B3N4-M5L6",
+    "E1R2-T3Y4-U5I6-O7P8",
+    "W4Q5-E6R7-T8Y9-U0I1",
+    "J6K7-L8M9-N0B1-V2C3",
+    "S3D4-F5G6-H7J8-K9L0",
+    "A7S8-D9F0-G1H2-J3K4",
+    "L9P0-Q1W2-E3R4-T5Y6",
+    "B1N2-M3L4-K5J6-H7G8",
+    "F4G5-H6J7-K8L9-P0Q1",
+    "Z2X3-C4V5-B6N7-M8L9",
+    "U6Y7-T8R9-E0W1-Q2P3",
+    "H3J4-K5L6-M7N8-B9V0",
+    "O7P8-Q9W0-E1R2-T3Y4",
+    "K0L1-P2Q3-W4E5-R6T7",
+    "C8V9-B0N1-M2L3-K4J5",
+    "Y9U0-I1O2-P3Q4-W5E6",
+    "T2R3-E4W5-Q6Y7-U8I9",
+}
+
+-- Store which HWID used which key
+local keyOwners = {}  -- key -> HWID
+local verifiedHWIDs = {} -- HWID -> true (for auto-load)
+
+-- ============================================
+-- 🔧 GET UNIQUE DEVICE ID (HWID)
+-- ============================================
+local function getHWID()
+    local success, hwid = pcall(function()
+        return game:GetService("RbxAnalyticsService"):GetClientId()
+    end)
+    
+    if success and hwid and hwid ~= "" then
+        return hwid
+    end
+    
+    local userId = game.Players.LocalPlayer.UserId
+    local pcName = ""
+    local success2, result = pcall(function()
+        return os.getenv("COMPUTERNAME") or os.getenv("USERNAME") or ""
+    end)
+    if success2 then
+        pcName = result
+    end
+    
+    local sessionId = game:GetService("HttpService"):GenerateGUID(false)
+    local combined = userId .. "_" .. pcName .. "_" .. sessionId
+    
+    local hash = 0
+    for i = 1, #combined do
+        hash = (hash * 31 + string.byte(combined, i)) % 2^31
+    end
+    
+    return tostring(hash)
+end
+
+-- ============================================
+-- 💾 SAVE AND LOAD KEY OWNERS
+-- ============================================
+local keyFile = "Precision_wtf_Keys.txt"
+local verifiedFile = "Precision_wtf_Verified.txt"
+
+local function saveKeyData()
+    pcall(function()
+        if writefile then
+            local data = game:GetService("HttpService"):JSONEncode(keyOwners)
+            writefile(keyFile, data)
+        end
+    end)
+end
+
+local function loadKeyData()
+    pcall(function()
+        if readfile and isfile and isfile(keyFile) then
+            local content = readfile(keyFile)
+            local data = game:GetService("HttpService"):JSONDecode(content)
+            if data then
+                keyOwners = data
+            end
+        end
+    end)
+end
+
+local function saveVerifiedData()
+    pcall(function()
+        if writefile then
+            local data = game:GetService("HttpService"):JSONEncode(verifiedHWIDs)
+            writefile(verifiedFile, data)
+        end
+    end)
+end
+
+local function loadVerifiedData()
+    pcall(function()
+        if readfile and isfile and isfile(verifiedFile) then
+            local content = readfile(verifiedFile)
+            local data = game:GetService("HttpService"):JSONDecode(content)
+            if data then
+                verifiedHWIDs = data
+            end
+        end
+    end)
+end
+
+loadKeyData()
+loadVerifiedData()
+
+-- ============================================
+-- 🔑 KEY CHECK FUNCTION WITH HWID LOCK
+-- ============================================
+local function checkKey(key, hwid)
+    local keyExists = false
+    for _, k in ipairs(validKeys) do
+        if k == key then
+            keyExists = true
+            break
+        end
+    end
+    
+    if not keyExists then
+        return false, "❌ Invalid License Key!"
+    end
+    
+    if keyOwners[key] then
+        if keyOwners[key] == hwid then
+            -- Mark this HWID as verified for auto-load
+            verifiedHWIDs[hwid] = true
+            saveVerifiedData()
+            return true, "✅ License Verified! (Already activated on this device)"
+        else
+            return false, "❌ This key is already activated on a DIFFERENT device!"
+        end
+    end
+    
+    -- First time using this key - lock it to this device
+    keyOwners[key] = hwid
+    verifiedHWIDs[hwid] = true
+    saveKeyData()
+    saveVerifiedData()
+    
+    return true, "✅ License Verified and LOCKED to this device!"
+end
+
+-- ============================================
+-- 🔄 CHECK IF DEVICE IS ALREADY VERIFIED (AUTO-LOAD)
+-- ============================================
+local playerHWID = getHWID()
+print("Device HWID: " .. playerHWID)
+
+local function isDeviceVerified()
+    return verifiedHWIDs[playerHWID] == true
+end
+
+-- ============================================
+-- 🟢 BUYER NOTIFICATION (10 seconds)
+-- ============================================
+local function showBuyerNotification()
+    local player = game.Players.LocalPlayer
+    local notifGui = Instance.new("ScreenGui")
+    notifGui.Name = "BuyerNotification"
+    notifGui.Parent = player:WaitForChild("PlayerGui")
+    
+    local notifFrame = Instance.new("Frame")
+    notifFrame.Size = UDim2.new(0, 280, 0, 70)
+    notifFrame.Position = UDim2.new(0.5, -140, 0.5, -35)
+    notifFrame.BackgroundColor3 = Color3.fromRGB(0, 50, 0)
+    notifFrame.BorderSizePixel = 0
+    notifFrame.Parent = notifGui
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = notifFrame
+    
+    local buyerText = Instance.new("TextLabel")
+    buyerText.Size = UDim2.new(0, 280, 0, 70)
+    buyerText.Text = "🟢 BUYER 🟢"
+    buyerText.TextColor3 = Color3.fromRGB(0, 255, 0)
+    buyerText.TextSize = 28
+    buyerText.Font = Enum.Font.GothamBold
+    buyerText.BackgroundTransparency = 1
+    buyerText.Parent = notifFrame
+    
+    -- Animate in
+    notifFrame.BackgroundTransparency = 1
+    for i = 1, 10 do
+        notifFrame.BackgroundTransparency = notifFrame.BackgroundTransparency - 0.1
+        task.wait(0.02)
+    end
+    
+    -- Show for 10 seconds
+    wait(10)
+    
+    -- Animate out
+    for i = 1, 10 do
+        notifFrame.BackgroundTransparency = notifFrame.BackgroundTransparency + 0.1
+        task.wait(0.02)
+    end
+    
+    notifGui:Destroy()
+end
+
+-- ============================================
+-- 📥 LOAD YOUR MAIN SCRIPT
+-- ============================================
+local function loadMainScript(showNotification)
+    -- Show buyer notification if this is first load (not auto-load)
+    if showNotification then
+        showBuyerNotification()
+    end
+    
+    -- 🔥 REPLACE THIS URL WITH YOUR SCRIPT'S RAW URL 🔥
+    local mainScriptUrl = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/your_script.lua"
+    
+    local success, err = pcall(function()
+        local scriptContent = game:HttpGet(mainScriptUrl)
+        loadstring(scriptContent)()
+    end)
+    
+    if not success then
+        print("Error loading script: " .. tostring(err))
+    end
+end
+
+-- ============================================
+-- 🎨 CREATE KEY GUI (only shown if not verified)
+-- ============================================
+local function showKeyGUI()
+    local player = game.Players.LocalPlayer
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "PrecisionKeySystem"
+    gui.Parent = player:WaitForChild("PlayerGui")
+    
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 450, 0, 280)
+    frame.Position = UDim2.new(0.5, -225, 0.5, -140)
+    frame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+    frame.BorderSizePixel = 0
+    frame.Parent = gui
+    
+    -- Gradient background
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(138, 43, 226)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(75, 0, 130))
+    })
+    gradient.Parent = frame
+    
+    -- Title
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(0, 450, 0, 50)
+    title.Position = UDim2.new(0, 0, 0, 20)
+    title.Text = "Precision.wtf"
+    title.TextColor3 = Color3.fromRGB(255, 200, 100)
+    title.TextSize = 28
+    title.Font = Enum.Font.GothamBold
+    title.BackgroundTransparency = 1
+    title.Parent = frame
+    
+    local subtitle = Instance.new("TextLabel")
+    subtitle.Size = UDim2.new(0, 450, 0, 25)
+    subtitle.Position = UDim2.new(0, 0, 0, 70)
+    subtitle.Text = "Enter Your License Key"
+    subtitle.TextColor3 = Color3.fromRGB(180, 180, 200)
+    subtitle.TextSize = 14
+    subtitle.Font = Enum.Font.Gotham
+    subtitle.BackgroundTransparency = 1
+    subtitle.Parent = frame
+    
+    local box = Instance.new("TextBox")
+    box.Size = UDim2.new(0, 330, 0, 50)
+    box.Position = UDim2.new(0.5, -165, 0, 110)
+    box.PlaceholderText = "XXXX-XXXX-XXXX-XXXX"
+    box.BackgroundColor3 = Color3.fromRGB(45, 45, 60)
+    box.TextColor3 = Color3.fromRGB(255, 255, 255)
+    box.TextSize = 16
+    box.Font = Enum.Font.Gotham
+    box.BorderSizePixel = 0
+    box.Parent = frame
+    
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0, 160, 0, 50)
+    btn.Position = UDim2.new(0.5, -80, 0, 175)
+    btn.Text = "VERIFY LICENSE"
+    btn.BackgroundColor3 = Color3.fromRGB(138, 43, 226)
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextSize = 16
+    btn.Font = Enum.Font.GothamBold
+    btn.BorderSizePixel = 0
+    btn.Parent = frame
+    
+    local msg = Instance.new("TextLabel")
+    msg.Size = UDim2.new(0, 420, 0, 40)
+    msg.Position = UDim2.new(0.5, -210, 0, 235)
+    msg.Text = ""
+    msg.TextColor3 = Color3.fromRGB(255, 100, 100)
+    msg.TextSize = 12
+    msg.BackgroundTransparency = 1
+    msg.Parent = frame
+    
+    -- HWID display
+    local hwidLabel = Instance.new("TextLabel")
+    hwidLabel.Size = UDim2.new(0, 450, 0, 20)
+    hwidLabel.Position = UDim2.new(0, 0, 0, 260)
+    hwidLabel.Text = "Device ID: " .. string.sub(playerHWID, 1, 20) .. "..."
+    hwidLabel.TextColor3 = Color3.fromRGB(100, 100, 120)
+    hwidLabel.TextSize = 9
+    hwidLabel.BackgroundTransparency = 1
+    hwidLabel.Parent = frame
+    
+    -- Button click handler
+    btn.MouseButton1Click:Connect(function()
+        local enteredKey = string.upper(box.Text)
+        
+        if enteredKey == "" then
+            msg.Text = "⚠️ Please enter your license key"
+            return
+        end
+        
+        local success, message = checkKey(enteredKey, playerHWID)
+        msg.Text = message
+        
+        if success then
+            msg.TextColor3 = Color3.fromRGB(100, 255, 100)
+            btn.Visible = false
+            box.Visible = false
+            wait(1)
+            gui:Destroy()
+            loadMainScript(true) -- Show notification on first verification
+        else
+            msg.TextColor3 = Color3.fromRGB(255, 100, 100)
+            box.Text = ""
+            box:CaptureFocus()
+        end
+    end)
+    
+    box.FocusLost:Connect(function(enterPressed)
+        if enterPressed then
+            btn.MouseButton1Click:Fire()
+        end
+    end)
+end
+
+-- ============================================
+-- 🚀 MAIN SCRIPT ENTRY POINT
+-- ============================================
+print("========================================")
+print("Precision.wtf License System Ready!")
+print("Total Keys Available: " .. #validKeys)
+print("Your Device HWID: " .. playerHWID)
+print("========================================")
+
+-- Check if device is already verified
+if isDeviceVerified() then
+    print("✅ Device already verified! Auto-loading script...")
+    loadMainScript(false) -- No notification on auto-load
+else
+    print("🔐 First time on this device. Showing key GUI...")
+    showKeyGUI()
+end
