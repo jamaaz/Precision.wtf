@@ -916,7 +916,7 @@ local function loadMainScript(showNotification)
     end
     
     -- 🔥 REPLACE THIS URL WITH YOUR SCRIPT'S RAW URL 🔥
-    local mainScriptUrl = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/your_script.lua"
+    local mainScriptUrl = "https://raw.githubusercontent.com/jamaaz/Precision.wtf/refs/heads/main/precisionwtf.txt"
     
     local success, err = pcall(function()
         local scriptContent = game:HttpGet(mainScriptUrl)
